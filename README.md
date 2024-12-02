@@ -1,23 +1,23 @@
 # Learning-FastAPI
 
 
-- [01. Introduction and Fundamentals](Contents/01__Intro-and-Fundamentals/ReadMe.md)
+- [1. Introduction and Fundamentals](Contents/1__Intro-and-Fundamentals/ReadMe.md)
 
-- [02. Data Validation and Serialization with Pydntic](Contents/02__Data-Validation-and-Serialization-with-Pydantic/ReadMe.md)
+- [2. Data Validation and Serialization with Pydntic](Contents/2__Data-Validation-and-Serialization-with-Pydantic/ReadMe.md)
 
-- [03. CRUD Operations, Forms, and File Uploads](Contents/03__CRUD-Operations-Forms-and-File-Uploads/ReadMe.md)
+- [3. CRUD Operations, Forms, and File Uploads](Contents/3__CRUD-Operations-Forms-and-File-Uploads/ReadMe.md)
 
-- [04. Asynchronous Programming](Contents/04__Asynchronous-Programming/ReadMe.md)
+- [4. Asynchronous Programming](Contents/4__Asynchronous-Programming/ReadMe.md)
 
-- [05. Dependency Injection](Contents/05__Dependency-Injection/ReadMe.md)
+- [5. Dependency Injection](Contents/5__Dependency-Injection/ReadMe.md)
 
-- [06. Authentication and Authorization](Contents/06__Authentication-and-Authorization/ReadMe.md)
+- [6. Authentication and Authorization](Contents/6__Authentication-and-Authorization/ReadMe.md)
 
-- [07. Database Integration](Contents/07__Database-Integration/ReadMe.md)
+- [7. Database Integration](Contents/7__Database-Integration/ReadMe.md)
 
-- [08. WebSocket Integration](Contents/08__WebSocket-Integration/ReadMe.md)
+- [8. WebSocket Integration](Contents/8__WebSocket-Integration/ReadMe.md)
 
-- [09. Implementing GraphQL](Contents/09__Implementing-GraphOL/ReadMe.md)
+- [9. Implementing GraphQL](Contents/9__Implementing-GraphOL/ReadMe.md)
 
 - [10. Advanced Topics](Contents/10__Advanced-Topics/ReadMe.md)
 
