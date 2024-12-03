@@ -1,6 +1,5 @@
 ## 1.1. FastAPI Introduction
 
-[FastAPI Official Documentation - Home ppage](https://fastapi.tiangolo.com)
 
 FastAPI is a modern, fast (high-performance), web framework for building APIs with Python based on standard Python type hints.
 
@@ -54,3 +53,7 @@ FastAPI stands out from other Python web frameworks in several ways:
    making it ideal for building high-performance, scalable applications. 
 
 
+### Reference Materials
+
+  - [FastAPI Official Documentation - Home ppage](https://fastapi.tiangolo.com)
+  - [[eBook] Mastering FastAPI: Building Modern, High-Performance APIs with Python by Laszlo Bocso, 2024.11.5](https://www.amazon.com/Mastering-FastAPI-Building-Modern-High-Performance-ebook/dp/B0DM6MDLRV)

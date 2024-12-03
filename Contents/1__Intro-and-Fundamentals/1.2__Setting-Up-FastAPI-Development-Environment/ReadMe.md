@@ -76,3 +76,9 @@ my_project/
 |-- requirements.txt
 |-- README.md
 ```
+
+
+### Reference Materials
+
+  - [[eBook] Mastering FastAPI: Building Modern, High-Performance APIs with Python by Laszlo Bocso, 2024.11.5](https://www.amazon.com/Mastering-FastAPI-Building-Modern-High-Performance-ebook/dp/B0DM6MDLRV)
+

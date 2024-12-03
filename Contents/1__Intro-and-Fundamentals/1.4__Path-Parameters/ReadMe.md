@@ -1,6 +1,5 @@
 ## 1.4. Path Parameters
 
-**Source**: [FastAPI > Learn > Tutorial - User Guide > Path Parameters](https://fastapi.tiangolo.com/tutorial/path-params)
 
 You can declare path "parameters" or "variables" with the same syntax used by Python format strings:
 
@@ -297,3 +296,8 @@ And you only have to declare them once.
 
 That's probably the main visible advantage of FastAPI 
 compared to alternative frameworks (apart from the raw performance).
+
+
+### Reference Materials
+
+  - [FastAPI > Learn > Tutorial - User Guide > Path Parameters](https://fastapi.tiangolo.com/tutorial/path-params)
