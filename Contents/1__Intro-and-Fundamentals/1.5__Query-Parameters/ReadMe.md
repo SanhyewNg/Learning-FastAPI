@@ -239,4 +239,4 @@ In this case, there are 3 query parameters:
 - `limit`, an optional `int`.
 
 **Tip**: 
-    You could also use `Enum`s the same way as with Path Parameters.
+    You could also use `Enum`s the same way as with [Path Parameters](../1.4__Path-Parameters/ReadMe.md#predefined-values).
