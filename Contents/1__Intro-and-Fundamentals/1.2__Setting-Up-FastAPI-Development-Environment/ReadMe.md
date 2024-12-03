@@ -43,3 +43,36 @@ You can install these tools with:
 ```cmd
 pip install black flake8 mypy
 ```
+
+
+
+### Project Structure
+
+Here's a recommended project structure for a FastAPI application: 
+```
+my_project/
+|-- app /
+|   |-- __init__.py
+|   |-- main.py
+|   |-- dependencies.py
+|   |-- routers/
+|       |-- __init__.py
+|       |-- items.py
+|       |-- users.py
+|
+|-- models /
+|   |-- __init__.py
+|   |-- item.py
+|   |-- user.py
+|
+|-- tests/
+|   |-- __init__.py
+|   |-- test_main.py
+|   |-- test_items.py
+|   |-- test_users.py
+|
+|-- venv/
+|-- .gitignore
+|-- requirements.txt
+|-- README.md
+```
