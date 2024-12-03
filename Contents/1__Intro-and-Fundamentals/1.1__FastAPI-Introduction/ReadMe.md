@@ -17,31 +17,6 @@ FastAPI is a modern, fast (high-performance), web framework for building APIs wi
 - **Standards-based**: Based on (and fully compatible with) the open standards for APIs: [OpenAPI](https://github.com/OAI/OpenAPI-Specification) (previously known as Swagger) and [JSON Schema](https://json-schema.org/).
 
 
-### How FastAPI Works
-
-FastAPI is built on top of *Starlette*, a lightweight ASGI framework/toolkit, 
-which is ideal for building high-performance asyncio services. 
-It also uses *Pydantic* for data validation and serialization. 
-
-When you create a FastAPI application, you define routes (endpoints) using Python functions. 
-These functions are decorated with FastAPI decorators 
-that specify the HTTP method and path for each endpoint. 
-FastAPI then uses these decorations to generate OpenAPI (Swagger) documentation automatically. 
-
-Here's a simple example of a FastAPI route: 
-```python
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/") ,
-async def root():
-    return {"message': "Hello World"}
-```
-In this example, we define a route for the root path ("/") that responds to GET requests. 
-The function returns a dictionary, which FastAPI automatically converts to JSON. 
-
-
 ### FastAPI's Architecture
 
 FastAPI's architecture is based on several key components: 

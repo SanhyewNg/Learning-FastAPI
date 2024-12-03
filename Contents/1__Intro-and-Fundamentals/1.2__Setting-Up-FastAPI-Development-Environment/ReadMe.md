@@ -28,7 +28,7 @@ This isolates your project dependencies from your system-wide Python installatio
 ### Install FastAPI package
 
 Once your virtual environment is activated, you can install FastAPI using pip: 
-```cmd
+```bash
 pip install fastapi
 ```
 
