@@ -1,2 +1,2 @@
-# 09. Implementing GraphQL
+# 9. Implementing GraphQL
 

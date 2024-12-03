@@ -1,2 +1,2 @@
-# 06. Authentication and Authorization
+# 6. Authentication and Authorization
 

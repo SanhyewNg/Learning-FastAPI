@@ -3,7 +3,7 @@ Learning-FastAPI
 
 - [1. Introduction and Fundamentals](Contents/1__Intro-and-Fundamentals/ReadMe.md)
 
-- [2. Data Validation and Serialization with Pydntic](Contents/2__Data-Validation-and-Serialization-with-Pydantic/ReadMe.md)
+- [2. Data Validation and Serialization](Contents/2__Data-Validation-and-Serialization/ReadMe.md)
 
 - [3. CRUD Operations, Forms, and File Uploads](Contents/3__CRUD-Operations-Forms-and-File-Uploads/ReadMe.md)
 

@@ -1,4 +1,4 @@
-# 01. Introduction and Fundamentals
+# 1. Introduction and Fundamentals
 
 - [1.1. FastAPI Introduction](./1.1__FastAPI-Introduction/ReadMe.md)
 

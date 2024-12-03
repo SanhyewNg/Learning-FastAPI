@@ -1,1 +1,0 @@
-# 02. Data Validation and Serialization with Pydntic
