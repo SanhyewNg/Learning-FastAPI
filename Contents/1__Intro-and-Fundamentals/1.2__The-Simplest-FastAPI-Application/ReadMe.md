@@ -1,4 +1,4 @@
-## 1.3. The Simplest FastAPI Application
+## 1.2. The Simplest FastAPI Application
 
 
 The simplest FastAPI file could look like this:

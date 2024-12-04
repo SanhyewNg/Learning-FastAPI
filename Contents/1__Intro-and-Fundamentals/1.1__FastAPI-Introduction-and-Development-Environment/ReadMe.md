@@ -1,9 +1,10 @@
-## 1.1. FastAPI Introduction
+## 1.1. FastAPI Introduction and Development Environment
 
+### Introduction to FastAPI 
 
 FastAPI is a modern, fast (high-performance), web framework for building APIs with Python based on standard Python type hints.
 
-### Key Features
+#### Key Features
 
 - **Fast**: Very high performance, on par with NodeJS and Go (thanks to Starlette and Pydantic). 
   One of the fastest Python frameworks available (https://fastapi.tiangolo.com/#performance).
@@ -16,7 +17,7 @@ FastAPI is a modern, fast (high-performance), web framework for building APIs wi
 - **Standards-based**: Based on (and fully compatible with) the open standards for APIs: [OpenAPI](https://github.com/OAI/OpenAPI-Specification) (previously known as Swagger) and [JSON Schema](https://json-schema.org/).
 
 
-### FastAPI's Architecture
+#### FastAPI's Architecture
 
 FastAPI's architecture is based on several key components: 
 1. **ASGI (Asynchronous Server Gateway Interface)**: This is the foundation of FastAPI's high performance. 
@@ -35,7 +36,7 @@ FastAPI's architecture is based on several key components:
    OpenAPI (Swagger) and JSON Schema documentation for your API. 
 
 
-### FastAPI vs Other Frameworks
+#### FastAPI vs Other Frameworks
 
 FastAPI stands out from other Python web frameworks in several ways: 
 1. **Performance**: FastAPI is one of the fastest Python frameworks available, 
@@ -51,6 +52,84 @@ FastAPI stands out from other Python web frameworks in several ways:
 
 5. **Asynchronous Support**: FastAPI is built for asynchronous programming, 
    making it ideal for building high-performance, scalable applications. 
+
+
+### Setting Up FastAPI Development Environment
+
+#### System Requirements
+
+FastAPI requires Python 3.6+. It's recommended to use the latest version of Python available, 
+as FastAPI takes advantage of the latest Python features. 
+
+
+#### Install Python Distribution 
+
+[Install Python Standard Distribution on Windows](https://docs.python.org/3.9/using/windows.html#installation-steps)
+
+[Install Anaconda Distribution on Windows]()
+
+
+#### Install VS Code and the Python Extensions
+
+
+
+#### Create a Virtual Environment
+
+It's a good practice to create a virtual environment for your FastAPI project. 
+This isolates your project dependencies from your system-wide Python installation.
+
+
+
+
+#### Install FastAPI package
+
+Once your virtual environment is activated, you can install FastAPI using pip: 
+```bash
+pip install fastapi
+```
+
+#### Development Tools
+
+While not strictly necessary, the following tools can enhance your FastAPI development experience: 
+1. Black: A code formatter that ensures consistent code style. 
+2. Flake8: A linter that checks your code for style and programming errors. 
+3. Mypy: A static type checker for Python. 
+
+You can install these tools with: 
+```cmd
+pip install black flake8 mypy
+```
+
+#### Project Structure
+
+Here's a recommended project structure for a FastAPI application: 
+```
+my_project/
+|-- app /
+|   |-- __init__.py
+|   |-- main.py
+|   |-- dependencies.py
+|   |-- routers/
+|       |-- __init__.py
+|       |-- items.py
+|       |-- users.py
+|
+|-- models /
+|   |-- __init__.py
+|   |-- item.py
+|   |-- user.py
+|
+|-- tests/
+|   |-- __init__.py
+|   |-- test_main.py
+|   |-- test_items.py
+|   |-- test_users.py
+|
+|-- venv/
+|-- .gitignore
+|-- requirements.txt
+|-- README.md
+```
 
 
 ### Reference Materials
