@@ -1,253 +1,9 @@
-## 1.4. Query Parameters
-
-### Query Parameters Basics
-
-When you declare other function parameters that are not part of the path parameters, 
-they are automatically interpreted as "query" parameters.
-
-```Python 3.8+
-from fastapi import FastAPI
-
-app = FastAPI()
-
-fake_items_db = [
-    {"item_name": "Foo"}, 
-    {"item_name": "Bar"}, 
-    {"item_name": "Baz"},
-]
-
-@app.get("/items/")
-async def read_item(skip: int = 0, limit: int = 10):
-    return fake_items_db[skip : skip + limit]
-```
-
-The query is the set of key-value pairs 
-that go after the `?` in a URL, separated by `&` characters.
-
-For example, in the URL:
-```
-http://127.0.0.1:8000/items/?skip=0&limit=10
-```
-...the query parameters are:
-- `skip`: with a value of `0`
-- `limit`: with a value of `10`
-
-As they are part of the URL, they are "naturally" strings.
-
-But when you declare them with Python types (in the example above, as `int`), 
-they are converted to that type and validated against it.
-
-All the same process that applied for path parameters also applies for query parameters:
-
-- Editor support (obviously)
-- Data "parsing"
-- Data validation
-- Automatic documentation
+## 1.4. Parameter Validations
 
 
-#### Defaults
+### More Validations for Query Parameters
 
-As query parameters are not a fixed part of a path, 
-they can be optional and can have default values.
-
-In the example above they have default values of `skip=0` and `limit=10`.
-
-So, going to the URL:
-```
-http://127.0.0.1:8000/items/
-```
-would be the same as going to:
-```
-http://127.0.0.1:8000/items/?skip=0&limit=10
-```
-
-But if you go to, for example:
-```
-http://127.0.0.1:8000/items/?skip=20
-```
-
-the parameter values in your function will be:
-- `skip=20`: because you set it in the URL
-- `limit=10`: because that was the default value
-
-
-#### Optional parameters
-
-The same way, you can declare optional query parameters, by setting their default to `None`:
-
-```Python 3.10+
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/items/{item_id}")
-async def read_item(item_id: str, q: str | None = None):
-    if q:
-        return {"item_id": item_id, "q": q}
-    return {"item_id": item_id}
-```
-
-In this case, the function parameter `q` will be optional, and will be `None` by default.
-
-**Check**: 
-    Also notice that FastAPI is smart enough to notice that 
-    the path parameter `item_id` is a path parameter and `q` is not, so, it's a query parameter.
-
-
-#### Query parameter type conversion
-
-You can also declare bool types, and they will be converted:
-
-```Python 3.10+
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/items/{item_id}")
-async def read_item(item_id: str, q: str | None = None, short: bool = False):
-    item = {"item_id": item_id}
-    if q:
-        item.update({"q": q})
-    if not short:
-        item.update(
-            {"description": "This is an amazing item that has a long description"}
-        )
-    return item
-```
-
-In this case, if you go to:
-```
-http://127.0.0.1:8000/items/foo?short=1
-```
-or
-```
-http://127.0.0.1:8000/items/foo?short=True
-```
-or
-```
-http://127.0.0.1:8000/items/foo?short=true
-```
-or
-```
-http://127.0.0.1:8000/items/foo?short=on
-```
-or
-```
-http://127.0.0.1:8000/items/foo?short=yes
-```
-or any other case variation (uppercase, first letter in uppercase, etc), 
-your function will see the parameter short with a bool value of `True`. Otherwise as `False`.
-
-
-#### Multiple path and query parameters
-
-You can declare multiple path parameters and query parameters at the same time, 
-FastAPI knows which is which.
-
-And you don't have to declare them in any specific order.
-
-They will be detected by name:
-
-```Python 3.10+
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/users/{user_id}/items/{item_id}")
-async def read_user_item(
-    user_id: int, item_id: str, q: str | None = None, short: bool = False
-):
-    item = {"item_id": item_id, "owner_id": user_id}
-    if q:
-        item.update({"q": q})
-    if not short:
-        item.update(
-            {"description": "This is an amazing item that has a long description"}
-        )
-    return item
-```
-
-
-#### Required query parameters
-
-When you declare a default value for non-path parameters 
-(for now, we have only seen query parameters), then it is not required.
-
-If you don't want to add a specific value but just make it optional, set the default as `None`.
-
-But when you want to make a query parameter required, you can just not declare any default value:
-
-```Python 3.8+
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/items/{item_id}")
-async def read_user_item(item_id: str, needy: str):
-    item = {"item_id": item_id, "needy": needy}
-    return item
-```
-
-Here the query parameter `needy` is a required query parameter of type `str`.
-
-If you open in your browser a URL like:
-```
-http://127.0.0.1:8000/items/foo-item
-```
-...without adding the required parameter `needy`, you will see an error like:
-```
-{
-  "detail": [
-    {
-      "type": "missing",
-      "loc": [
-        "query",
-        "needy"
-      ],
-      "msg": "Field required",
-      "input": null,
-      "url": "https://errors.pydantic.dev/2.1/v/missing"
-    }
-  ]
-}
-```
-As `needy` is a required parameter, you would need to set it in the URL:
-```
-http://127.0.0.1:8000/items/foo-item?needy=sooooneedy
-```
-...this would work:
-```
-{
-    "item_id": "foo-item",
-    "needy": "sooooneedy"
-}
-```
-And of course, you can define some parameters as required, 
-some as having a default value, and some entirely optional:
-
-```Python 3.10+
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/items/{item_id}")
-async def read_user_item(
-    item_id: str, needy: str, skip: int = 0, limit: int | None = None
-):
-    item = {"item_id": item_id, "needy": needy, "skip": skip, "limit": limit}
-    return item
-```
-
-In this case, there are 3 query parameters:
-- `needy`, a required `str`.
-- `skip`, an `int` with a default value of `0`.
-- `limit`, an optional `int`.
-
-**Tip**: 
-    You could also use `Enum`s the same way as with [Path Parameters](../1.4__Path-Parameters/ReadMe.md#predefined-values).
-
-
-### Additional validation
+#### Approach
 
 Let's take this application as example:
 
@@ -272,7 +28,7 @@ We are going to enforce that even though `q` is optional,
 whenever it is provided, its length doesn't exceed 50 characters.
 
 
-#### Import `Query` and `Annotated`
+##### Import `Query` and `Annotated`
 
 To achieve that, first import:
   - `Query` from `fastapi`
@@ -294,7 +50,7 @@ If you have an older version, you would get errors when trying to use Annotated.
 Make sure you Upgrade the FastAPI version to at least 0.95.1 before using Annotated.
 
 
-#### Use `Annotated` in the type for the `q` parameter
+##### Use `Annotated` in the type for the `q` parameter
 
 `Annotated` can be used to add metadata to your parameters 
 ([Python Types Intro](https://fastapi.tiangolo.com/python-types/#type-hints-with-metadata-annotations))
@@ -318,7 +74,7 @@ and by default, it is `None`.
 Now let's jump to the fun stuff. 🎉
 
 
-#### Add `Query` to Annotated in the `q` parameter
+##### Add `Query` to Annotated in the `q` parameter
 
 Now that we have this `Annotated` where we can put more information (in this case some additional validation), add `Query` inside of `Annotated`, and set the parameter `max_length` to `50`:
 
@@ -474,7 +230,7 @@ async def read_items(q: Annotated[str, Query(min_length=3)]):
 ```
 
 
-#### Required with Ellipsis (`...`)
+##### Required with Ellipsis (`...`)
 
 There's an alternative way to explicitly declare that a value is required. 
 You can set the default to the literal value `...`:
@@ -504,7 +260,7 @@ It is used by Pydantic and FastAPI to explicitly declare that a value is require
 This will let FastAPI know that this parameter is required.
 
 
-#### Required, can be None
+##### Required, can be None
 
 You can declare that a parameter can accept `None`, but that it's still required. 
 This would force clients to send a value, even if the value is `None`.
@@ -532,7 +288,7 @@ when something is required, you can simply omit the default,
 so you normally don't have to use `...`.
 
 
-### Query parameter list / multiple values
+#### Query parameter list / multiple values
 
 When you define a query parameter explicitly with `Query`, 
 you can also declare it to receive a list of values, 
@@ -582,7 +338,7 @@ The interactive API docs will update accordingly, to allow multiple values:
 </div> 
 
 
-#### Query parameter list / multiple values with defaults
+##### Query parameter list / multiple values with defaults
 
 And you can also define a default list of values if none are provided:
 
@@ -611,7 +367,7 @@ the default of `q` will be: `["foo", "bar"]` and your response will be:
 ```
 
 
-#### Using just list
+##### Using just list
 
 You can also use `list` directly instead of `List[str]` (or `list[str]` in Python 3.9+):
 
@@ -634,7 +390,7 @@ that the contents of the list are integers.
 But `list` alone wouldn't.
 
 
-### Declare more metadata
+#### Declare more metadata
 
 You can add more information about the parameter.
 
@@ -690,7 +446,7 @@ async def read_items(
 ```
 
 
-### Alias parameters
+#### Alias parameters
 
 Imagine that you want the parameter to be `item-query`.
 
@@ -722,7 +478,7 @@ async def read_items(q: Annotated[str | None, Query(alias="item-query")] = None)
 ```
 
 
-### Deprecating parameters
+#### Deprecating parameters
 
 Now let's say you don't like this parameter anymore.
 
@@ -768,7 +524,7 @@ The docs will show it like this:
 </div> 
 
 
-### Exclude parameters from OpenAPI
+#### Exclude parameters from OpenAPI
 
 To exclude a query parameter from the generated OpenAPI schema 
 (and thus, from the automatic documentation systems), 
@@ -791,7 +547,7 @@ async def read_items(
 ```
 
 
-### Recap
+#### Recap
 
 You can declare additional validations and metadata for your parameters.
 
@@ -808,13 +564,286 @@ Validations specific for strings:
 
 In these examples you saw how to declare validations for `str` values.
 
+----------------------------------------------------------------------------
+
+### Additional Validations for Path Parameters
+
+In the same way that you can declare [more validations and metadata for query parameters with `Query`](../1.5__Query-Parameters/ReadMe.md#add-more-validations), 
+you can declare the same type of validations and metadata for path parameters with `Path`.
+
+#### Approach
+
+##### Import `Path`
+First, import `Path` from `fastapi`, and import `Annotated`:
+
+```Python 3.10+
+from typing import Annotated
+```
+
+FastAPI added support for `Annotated` (and started recommending it) in version 0.95.0.
+
+If you have an older version, you would get errors when trying to use `Annotated`.
+
+Make sure you [Upgrade the FastAPI version](https://fastapi.tiangolo.com/deployment/versions/#upgrading-the-fastapi-versions) 
+to at least 0.95.1 before using `Annotated`.
 
 
+##### Declare metadata
+
+You can declare all the same parameters as for `Query`.
+
+For example, to declare a `title` metadata value for the path parameter `item_id` you can type:
+
+```Python 3.10+
+from typing import Annotated
+from fastapi import FastAPI, Path, Query
+
+app = FastAPI()
+
+@app.get("/items/{item_id}")
+async def read_items(
+    item_id: Annotated[int, Path(title="The ID of the item to get")],
+    q: Annotated[str | None, Query(alias="item-query")] = None,
+):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    return results
+```
+
+A path parameter is always required as it has to be part of the path. 
+Even if you declared it with `None` or set a default value, 
+it would not affect anything, it would still be always required.
+
+
+#### Order the parameters as you need
+
+This is probably not as important or necessary if you use `Annotated`.
+
+Let's say that you want to declare the query parameter `q` as a required `str`.
+
+And you don't need to declare anything else for that parameter, so you don't really need to use `Query`.
+
+But you still need to use `Path` for the `item_id` path parameter. 
+And you don't want to use `Annotated` for some reason.
+
+Python will complain if you put a value with a "default" before a value that doesn't have a "default".
+
+But you can re-order them, and have the value without a default (the query parameter `q`) first.
+
+It doesn't matter for FastAPI. 
+It will detect the parameters by their names, types and default declarations (`Query`, `Path`, etc), 
+it doesn't care about the order.
+
+So, you can declare your function as:
+
+```Python 3.8+ - non-Annotated
+from fastapi import FastAPI, Path
+
+app = FastAPI()
+
+@app.get("/items/{item_id}")
+async def read_items(q: str, item_id: int = Path(title="The ID of the item to get")):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    return results
+```
+
+Prefer to use the `Annotated` version if possible.
+
+But keep in mind that if you use `Annotated`, you won't have this problem, 
+it won't matter as you're not using the function parameter default values for `Query()` or `Path()`.
+
+```Python 3.9+
+from typing import Annotated
+from fastapi import FastAPI, Path
+
+app = FastAPI()
+
+@app.get("/items/{item_id}")
+async def read_items(
+    q: str, item_id: Annotated[int, Path(title="The ID of the item to get")]
+):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    return results
+```
+
+
+##### Order the parameters as you need, tricks
+
+This is probably not as important or necessary if you use `Annotated`.
+
+Here's a small trick that can be handy, but you won't need it often.
+
+If you want to:
+  - declare the `q` query parameter without a `Query` nor any default value
+  - declare the path parameter `item_id` using Path
+  - have them in a different order
+  - not use `Annotated`
+
+Python has a little special syntax for that.
+
+Pass `*`, as the first parameter of the function.
+
+Python won't do anything with that `*`, 
+but it will know that all the following parameters should be called as 
+keyword arguments (key-value pairs), also known as `kwargs`. 
+Even if they don't have a default value.
+
+```Python 3.8+ - non-Annotated
+from fastapi import FastAPI, Path
+
+app = FastAPI()
+
+@app.get("/items/{item_id}")
+async def read_items(*, item_id: int = Path(title="The ID of the item to get"), q: str):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    return results
+```
+
+##### Better with `Annotated`
+Keep in mind that if you use `Annotated`, 
+as you are not using function parameter default values, 
+you won't have this problem, and you probably won't need to use `*`.
+
+```Python 3.9+
+from typing import Annotated
+from fastapi import FastAPI, Path
+
+app = FastAPI()
+
+@app.get("/items/{item_id}")
+async def read_items(
+    item_id: Annotated[int, Path(title="The ID of the item to get")], q: str
+):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    return results
+```
+
+
+#### Number validations
+
+##### greater than or equal
+
+With `Query` and `Path` (and others you'll see later) 
+you can declare number constraints.
+
+Here, with `ge=1`, `item_id` will need to be an integer number "greater than or equal" to `1`.
+
+```Python 3.9+
+from typing import Annotated
+from fastapi import FastAPI, Path
+
+app = FastAPI()
+
+@app.get("/items/{item_id}")
+async def read_items(
+    item_id: Annotated[int, Path(title="The ID of the item to get", ge=1)], q: str
+):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    return results
+```
+
+##### greater than and less than or equal
+The same applies for:
+  - `gt`: greater than
+  - `le`: less than or equal
+
+```Python 3.9+
+from typing import Annotated
+from fastapi import FastAPI, Path
+
+app = FastAPI()
+
+@app.get("/items/{item_id}")
+async def read_items(
+    item_id: Annotated[int, Path(title="The ID of the item to get", gt=0, le=1000)],
+    q: str,
+):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    return results
+```
+
+
+##### floats, greater than and less than
+
+Number validations also work for `float` values.
+
+Here's where it becomes important to be able to declare `gt` and not just `ge`. 
+As with it you can require, for example, 
+that a value must be greater than `0`, even if it is less than `1`.
+
+So, `0.5` would be a valid value. But `0.0` or `0` would not.
+
+And the same for `lt`.
+
+```Python 3.9+
+from typing import Annotated
+from fastapi import FastAPI, Path, Query
+
+app = FastAPI()
+
+@app.get("/items/{item_id}")
+async def read_items(
+    *,
+    item_id: Annotated[int, Path(title="The ID of the item to get", ge=0, le=1000)],
+    q: str,
+    size: Annotated[float, Query(gt=0, lt=10.5)],
+):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    if size:
+        results.update({"size": size})
+    return results
+```
+
+
+#### Recap
+
+With `Path` (and others you haven't seen yet), 
+you can declare metadata and string validations.
+
+And you can also declare numeric validations:
+  - `gt`: greater than
+  - `ge`: greater than or equal
+  - `lt`: less than
+  - `le`: less than or equal
+
+`Query`, `Path`, and other classes you will see later are subclasses of a common `Param` class.
+
+All of them share the same parameters for additional validation and metadata you have seen.
+
+
+### Technical Details
+
+When you import `Query`, `Path` and others from `fastapi`, they are actually functions.
+
+That when called, return instances of classes of the same name.
+
+So, you import `Query`, which is a function. 
+And when you call it, it returns an instance of a class also named `Query`.
+
+These functions are there (instead of just using the classes directly) 
+so that your editor doesn't mark errors about their types.
+
+That way you can use your normal editor and coding tools 
+without having to add custom configurations to disregard those errors.
 
 
 ### Reference Materials
 
-  - [FastAPI > Learn > Tutorial - User Guide > Query Parameters](https://fastapi.tiangolo.com/tutorial/query-params)
-
   - [FastAPI > Learn > Tutorial - User Guide > Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations)
 
+  - [FastAPI > Learn > Tutorial - User Guide > Path Parameters and Numeric Validations](https://fastapi.tiangolo.com/tutorial/path-params-numeric-validations)

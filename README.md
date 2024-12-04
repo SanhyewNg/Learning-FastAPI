@@ -3,15 +3,13 @@ Learning-FastAPI
 
 - [1. Introduction and Fundamentals](Contents/1__Intro-and-Fundamentals/ReadMe.md)
 
-- [2. Data Validation and Serialization](Contents/2__Data-Validation-using-Pydantic-Models/ReadMe.md)
+- [2. Data Validation using Pydantic Models](Contents/2__Data-Validation-using-Pydantic-Models/ReadMe.md)
 
 - [3. CRUD Operations, Forms, and File Uploads](Contents/3__CRUD-Operations-Forms-and-File-Uploads/ReadMe.md)
 
-- [4. Asynchronous Programming](Contents/4__Asynchronous-Programming/ReadMe.md)
+- [4. Dependency Injection](Contents/4__Dependency-Injection/ReadMe.md)
 
-- [5. Dependency Injection](Contents/5__Dependency-Injection/ReadMe.md)
-
-- [6. Authentication and Authorization](Contents/6__Authentication-and-Authorization/ReadMe.md)
+- [5. Security - Auth](Contents/5__Security-Auth/ReadMe.md)
 
 - [7. Database Integration](Contents/7__Database-Integration/ReadMe.md)
 
